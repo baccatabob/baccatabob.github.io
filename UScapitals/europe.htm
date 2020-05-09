@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Countries whose capital shares a name with somewhere in the USA</title>
+</head>
+<body>
+
+<script src="d3-3.5.3.min.js"></script>
+<script src="topojson-1.6.9.min.js"></script>
+<script src="datamaps.world.min.js"></script>
+
+<div id="container" style="position: relative; width: 600px; height: 400px;"></div>
+
+<script>
+    var map = new Datamap({
+		element: document.getElementById('container'),
+		scope: 'world',
+		setProjection: function(element) {
+			var projection = d3.geo.equirectangular()
+			  .center([10, 50])
+			  .rotate([4.4, 0])
+			  .scale(600)
+			  .translate([element.offsetWidth / 2, element.offsetHeight / 2]);
+			var path = d3.geo.path()
+			  .projection(projection);
+
+			return {path: path, projection: projection};
+		  },
+		fills: {
+			1: '#ddf370',
+			2: '#c1eb74',
+			3: '#a6e37a',
+			4: '#8cd97f',
+			5: '#74d084',
+			6: '#5cc589',
+			7: '#46ba8c',
+			8: '#2faf8f',
+			9: '#16a48f',
+			10: '#00988e',
+			11: '#008d8c',
+			12: '#008187',
+			13: '#047581',
+			14: '#156979',
+			15: '#205e6f',
+			16: '#265364',
+			17: '#2a4858',
+			defaultFill: '#eeeeee'
+		},
+		data: {
+			ISL: {fillKey: 0, numberOfPlaces: 0, capital: 'Reykjavik'},
+			IRL: {fillKey: 10, numberOfPlaces: 10, capital: 'Dublin'},
+			PRT: {fillKey: 9, numberOfPlaces: 9, capital: 'Lisbon'},
+			ESP: {fillKey: 4, numberOfPlaces: 4, capital: 'Madrid'},
+			GBR: {fillKey: 11, numberOfPlaces: 11, capital: 'London'},
+			FRA: {fillKey: 12, numberOfPlaces: 12, capital: 'Paris'},
+			NLD: {fillKey: 4, numberOfPlaces: 4, capital: 'Amsterdam'},
+			BEL: {fillKey: 1, numberOfPlaces: 1, capital: 'Brussels'},
+			DEU: {fillKey: 16, numberOfPlaces: 16, capital: 'Berlin'},
+			GRC: {fillKey: 14, numberOfPlaces: 14, capital: 'Athens'},
+			ALB: {fillKey: 0, numberOfPlaces: 0, capital: 'Tirana'},
+			DZA: {fillKey: 0, numberOfPlaces: 0, capital: 'Algiers'},
+			LUX: {fillKey: 0, numberOfPlaces: 0, capital: 'Luxembourg'},
+			CZE: {fillKey: 3, numberOfPlaces: 3, capital: 'Prague'},
+			DNK: {fillKey: 1, numberOfPlaces: 1, capital: 'Copenhagen'},
+			BIH: {fillKey: 0, numberOfPlaces: 0, capital: 'Sarajevo'},
+			NOR: {fillKey: 1, numberOfPlaces: 1, capital: 'Oslo'},
+			SWE: {fillKey: 3, numberOfPlaces: 3, capital: 'Stockholm'},
+			CHE: {fillKey: 2, numberOfPlaces: 2, capital: 'Bern'},
+			FIN: {fillKey: 0, numberOfPlaces: 0, capital: 'Helsinki'},
+			AUT: {fillKey: 12, numberOfPlaces: 12, capital: 'Vienna'},
+			EST: {fillKey: 0, numberOfPlaces: 0, capital: 'Tallinn'},
+			RUS: {fillKey: 7, numberOfPlaces: 7, capital: 'Moscow'},
+			LVA: {fillKey: 2, numberOfPlaces: 2, capital: 'Riga'},
+			LTU: {fillKey: 0, numberOfPlaces: 0, capital: 'Vilnius'},
+			BLR: {fillKey: 0, numberOfPlaces: 0, capital: 'Minsk'},
+			UKR: {fillKey: 0, numberOfPlaces: 0, capital: 'Kiev'},
+			MDA: {fillKey: 0, numberOfPlaces: 0, capital: 'Chisinau'},
+			ROU: {fillKey: 0, numberOfPlaces: 0, capital: 'Bucharest'},
+			BGR: {fillKey: 0, numberOfPlaces: 0, capital: 'Sofia'},
+			TUR: {fillKey: 0, numberOfPlaces: 0, capital: 'Ankara'},
+			EGY: {fillKey: 8, numberOfPlaces: 8, capital: 'Cairo'},
+			LBY: {fillKey: 1, numberOfPlaces: 1, capital: 'Tripoli'},
+			TUN: {fillKey: 0, numberOfPlaces: 0, capital: 'Tunis'},
+			MAR: {fillKey: 0, numberOfPlaces: 0, capital: 'Rabat'},
+			ITA: {fillKey: 8, numberOfPlaces: 8, capital: 'Rome'},
+			HRV: {fillKey: 0, numberOfPlaces: 0, capital: 'Zagreb'},
+			CYP: {fillKey: 0, numberOfPlaces: 0, capital: 'Nicosia'},
+			MNE: {fillKey: 0, numberOfPlaces: 0, capital: 'Podgorica'},
+			SVK: {fillKey: 0, numberOfPlaces: 0, capital: 'Bratislava'},
+			SVN: {fillKey: 0, numberOfPlaces: 0, capital: 'Ljubljana'},
+			SRB: {fillKey: 4, numberOfPlaces: 4, capital: 'Belgrade'},
+			HUN: {fillKey: 1, numberOfPlaces: 1, capital: 'Budapest'},
+			MCO: {fillKey: 0, numberOfPlaces: 0, capital: 'Monaco'},
+			AND: {fillKey: 0, numberOfPlaces: 0, capital: 'Andorra la Vella'},
+			POL: {fillKey: 7, numberOfPlaces: 7, capital: 'Warsaw'}
+		},
+		geographyConfig: {
+            popupTemplate: function(geo, data) {
+                return '<div class="hoverinfo"><strong>' +
+						geo.properties.name +
+						' - ' + data.capital + 
+						numberToText(data.numberOfPlaces) +
+                        '</strong></div>';
+            }
+        }
+	});
+
+	function numberToText(num) {
+		if (num == 0) {return ' doesn\'t occur';}
+	
+		if (num == 1) {return ' occurs once';}
+		
+		if (num == 2) {return ' occurs twice';}
+		
+		return ' occurs ' + num + ' times';
+	}
+	
+	maps.labels();
+	
+</script>
+
+</body>
+</html>

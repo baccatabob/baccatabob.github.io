@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>US states containing a place with the same name as another country's capital city</title>
+</head>
+<body>
+
+<script src="d3-3.5.3.min.js"></script>
+<script src="topojson-1.6.9.min.js"></script>
+<script src="datamaps.all.js"></script>
+
+<div id="container" style="position: relative; width: 1200px; height: 700px;"></div>
+
+<script>
+    var map = new Datamap({
+		element: document.getElementById('container'),
+		scope: 'usa',
+		fills: {
+			1: '#e2f470',
+			2: '#cbee73',
+			3: '#b5e877',
+			4: '#a0e17b',
+			5: '#8bd97f',
+			6: '#77d183',
+			7: '#64c987',
+			8: '#51c08b',
+			9: '#3fb78d',
+			10: '#2dae8f',
+			11: '#19a58f',
+			12: '#009c8f',
+			13: '#00928d',
+			14: '#00898a',
+			15: '#007f86',
+			16: '#037681',
+			17: '#126c7b',
+			18: '#1c6373',
+			19: '#235a6b',
+			20: '#275162',
+			21: '#2a4858',
+			22: '#2a4858',
+			defaultFill: '#fafa6e'
+		},
+		data: {
+			'AL': {fillKey: 3, numberOfCopiedCapitals: 3},
+			'AK': {fillKey: 0, numberOfCopiedCapitals: 0},
+			'AZ': {fillKey: 0, numberOfCopiedCapitals: 0},
+			'AR': {fillKey: 8, numberOfCopiedCapitals: 8},
+			'CA': {fillKey: 4, numberOfCopiedCapitals: 4},
+			'CO': {fillKey: 2, numberOfCopiedCapitals: 2},
+			'CT': {fillKey: 4, numberOfCopiedCapitals: 4},
+			'DE': {fillKey: 1, numberOfCopiedCapitals: 1},
+			'FL': {fillKey: 3, numberOfCopiedCapitals: 3},
+			'GA': {fillKey: 9, numberOfCopiedCapitals: 9},
+			'HI': {fillKey: 0, numberOfCopiedCapitals: 0},
+			'ID': {fillKey: 3, numberOfCopiedCapitals: 3},
+			'IL': {fillKey: 18, numberOfCopiedCapitals: 18},
+			'IN': {fillKey: 7, numberOfCopiedCapitals: 7},
+			'IA': {fillKey: 7, numberOfCopiedCapitals: 7},
+			'KS': {fillKey: 6, numberOfCopiedCapitals: 6},
+			'KY': {fillKey: 6, numberOfCopiedCapitals: 6},
+			'LA': {fillKey: 0, numberOfCopiedCapitals: 0},
+			'ME': {fillKey: 11, numberOfCopiedCapitals: 11},
+			'MD': {fillKey: 2, numberOfCopiedCapitals: 2},
+			'MS': {fillKey: 0, numberOfCopiedCapitals: 0},
+			'MI': {fillKey: 13, numberOfCopiedCapitals: 13},
+			'MN': {fillKey: 11, numberOfCopiedCapitals: 11},
+			'MS': {fillKey: 1, numberOfCopiedCapitals: 1},
+			'MO': {fillKey: 3, numberOfCopiedCapitals: 3},
+			'MT': {fillKey: 2, numberOfCopiedCapitals: 2},
+			'NE': {fillKey: 4, numberOfCopiedCapitals: 4},
+			'NV': {fillKey: 0, numberOfCopiedCapitals: 0},
+			'NH': {fillKey: 6, numberOfCopiedCapitals: 6},
+			'NM': {fillKey: 0, numberOfCopiedCapitals: 0},
+			'NJ': {fillKey: 2, numberOfCopiedCapitals: 2},
+			'NY': {fillKey: 22, numberOfCopiedCapitals: 22},
+			'NC': {fillKey: 6, numberOfCopiedCapitals: 6},
+			'ND': {fillKey: 3, numberOfCopiedCapitals: 3},
+			'OH': {fillKey: 21, numberOfCopiedCapitals: 21},
+			'OK': {fillKey: 3, numberOfCopiedCapitals: 3},
+			'OR': {fillKey: 5, numberOfCopiedCapitals: 5},
+			'PA': {fillKey: 9, numberOfCopiedCapitals: 9},
+			'RI': {fillKey: 0, numberOfCopiedCapitals: 0},
+			'SC': {fillKey: 1, numberOfCopiedCapitals: 1},
+			'SD': {fillKey: 2, numberOfCopiedCapitals: 2},
+			'TN': {fillKey: 4, numberOfCopiedCapitals: 4},
+			'TX': {fillKey: 9, numberOfCopiedCapitals: 9},
+			'UT': {fillKey: 4, numberOfCopiedCapitals: 4},
+			'VT': {fillKey: 2, numberOfCopiedCapitals: 2},
+			'VA': {fillKey: 5, numberOfCopiedCapitals: 5},
+			'WA': {fillKey: 0, numberOfCopiedCapitals: 0},
+			'WV': {fillKey: 3, numberOfCopiedCapitals: 3},
+			'WI': {fillKey: 0, numberOfCopiedCapitals: 0},
+			'WY': {fillKey: 0, numberOfCopiedCapitals: 0}
+		},
+		geographyConfig: {
+            popupTemplate: function(geo, data) {
+                return '<div class="hoverinfo"><strong>' +
+						geo.properties.name +
+						numberToText(data.numberOfCopiedCapitals) +
+                        '</strong></div>';
+            }
+        }
+	});
+
+	function numberToText(num) {
+		if (num == 0) {return ' doesn\'t have any places with the same name as another country\'s capital city';}
+	
+		if (num == 1) {return ' has one place that has the same name as another country\'s capital city';}
+		
+		return ' has ' + num + ' places that have the same name as another country\'s capital city';
+	}
+	
+	map.labels();
+
+</script>
+
+</body>
+</html>
