@@ -1,0 +1,175 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Distance to UK coastline</title>
+  <meta name="description" content="Distance on land or at sea to the nearest bit of the UK coastline, 0.04 degrees resolution">
+  <meta name="author" content="Bob Salmon">
+
+<style>
+
+.subunit {
+	fill: #9f9;
+	opacity: 100%;
+}
+
+.subunit-boundary.UK {
+  stroke: #000;
+  fill:none;
+}
+
+.subunit-boundary {
+  fill: none;
+  stroke: #000;
+ }
+
+.axis {
+font-size: 20px;
+}
+
+.sea {
+	fill: #77f;
+	opacity: 100%
+}
+
+div.tooltip {	
+    position: absolute;			
+    text-align: center;			
+    width: 80px;					
+    height: 28px;					
+    padding: 2px;				
+    font: 12px sans-serif;		
+    background: white;
+    border: 0px;		
+    border-radius: 8px;			
+    pointer-events: none;			
+}
+
+</style>
+
+</head>
+
+<body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+<script src="https://d3js.org/d3.v4.js"></script>
+<script src="https://d3js.org/topojson.v1.min.js"></script>
+<script src="https://d3js.org/d3-array.v2.min.js"></script>
+<script src="https://d3js.org/d3-color.v1.min.js"></script>
+<script src="https://d3js.org/d3-format.v1.min.js"></script>
+<script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+<script src="https://d3js.org/d3-time.v1.min.js"></script>
+<script src="https://d3js.org/d3-time-format.v2.min.js"></script>
+<script src="https://d3js.org/d3-scale.v3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/1.1.0/d3-legend.js"></script>
+
+<script>
+
+var roundTo2DP = function (x) {
+	return (Math.round(x * 100) / 100).toFixed(2);
+}
+
+// Define the div for the tooltip
+var div = d3.select("body").append("div")	
+    .attr("class", "tooltip")				
+    .style("opacity", 0);
+
+var minDistance = 0,
+	maxDistance = 280;
+	
+var w = 550, h = 80;
+var width = 1000,
+    height = 1160;
+
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+ 
+d3.json("uk_topo_coast_distance.json", function(error, uk) {
+
+	var projection = d3.geo.albers()
+		.center([0, 55.4])
+		.rotate([4.4, 0])
+		.parallels([50, 60])
+		.scale(6000)
+		.translate([width / 2, height / 2]);
+
+	var myColour = d3.scaleLinear()
+		.domain([minDistance, maxDistance])
+		.range(["white","black"]);
+		
+	var path = d3.geo.path()
+		.projection(projection);
+
+	svg.append("path")
+	   .datum(topojson.mesh(uk, uk.objects.boundingbox))
+	   .attr("class", "sea bounding-box")
+	   .attr("d", path);
+
+	var subunits = topojson.feature(uk, uk.objects.subunits);
+
+	svg.selectAll(".subunit")
+		.data(topojson.feature(uk, uk.objects.subunits).features)
+		.enter().append("path")
+		.attr("class", function(d) { return "subunit " + d.id; })
+		.attr("d", path);
+		
+
+	svg.append("path")
+		.datum(topojson.mesh(uk, uk.objects.subunits, function(a, b) { return a === b && a.id !== "IRL"; }))
+		.attr("d", path)
+		.attr("class", "subunit-boundary UK");
+
+	svg.append("path")
+		.datum(topojson.mesh(uk, uk.objects.subunits, function(a, b) { return a === b && a.id === "IRL"; }))
+		.attr("d", path)
+		.attr("class", "subunit-boundary IRL");
+
+	svg.selectAll("circle")
+		.data(topojson.feature(uk, uk.objects.places).features)
+		.enter()
+		.append("circle")
+		.attr("r", "3px")
+		.attr("transform", function(d) { return "translate(" + projection(d.geometry.coordinates) + ")"; })
+		.attr("fill", function(d) { return myColour(d.properties.distance);})
+		.attr("opacity", "31%")
+		.on("mouseover", function(d) {		
+            div.transition()		
+                .duration(200)		
+                .style("opacity", .9);		
+            div	.html("(" + roundTo2DP(d.geometry.coordinates[0]) + ", " + roundTo2DP(d.geometry.coordinates[1]) + ")<br/>" + d.properties.distance + " km")	
+                .style("left", (d3.event.pageX) + "px")		
+                .style("top", (d3.event.pageY - 28) + "px");	
+            })					
+        .on("mouseout", function(d) {		
+            div.transition()		
+                .duration(500)		
+                .style("opacity", 0);	
+        });
+
+svg.append("path")
+    .datum(topojson.feature(uk, uk.objects.cities))
+    .attr("d", path)
+    .attr("class", "place");
+
+	svg.selectAll(".place-label")
+		.data(topojson.feature(uk, uk.objects.cities).features)
+	  .enter().append("text")
+		.attr("class", "place-label")
+		.attr("transform", function(d) { return "translate(" + projection(d.geometry.coordinates) + ")"; })
+		.attr("dy", ".35em")
+		.text(function(d) { return d.properties.name; });
+
+	svg.selectAll(".place-label")
+		.attr("x", function(d) { return d.geometry.coordinates[0] > -1 ? 6 : -6; })
+		.style("text-anchor", function(d) { return d.geometry.coordinates[0] > -1 ? "start" : "end"; });
+
+});
+
+</script>
+</body>
+</html>
