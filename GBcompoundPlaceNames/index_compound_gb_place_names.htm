@@ -1,0 +1,315 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Places in Great Britain with compound names</title>
+  <meta name="description" content="Places in Great Britain whose name has something like 'and' or 'by the' in it">
+  <meta name="author" content="Bob">
+
+<style>
+.subunit.SCT { fill: #fff; }
+.subunit.WLS { fill: #fff; }
+.subunit.NIR { fill: #fff; }
+.subunit.ENG { fill: #fff; }
+.subunit.IRL { display: none; }
+
+
+.subunit-boundary.IRL {
+  stroke: #aaa;
+}
+
+.subunit-boundary.UK {
+  stroke: #aaa;
+}
+
+.subunit-boundary {
+  fill: none;
+  stroke: #777;
+  stroke-linejoin: round;
+}
+
+div.tooltip {	
+    position: absolute;			
+    text-align: center;			
+    width: 150px;					
+    height: 100px;					
+    padding: 2px;				
+    font: 15px sans-serif;		
+    background: white;
+    border: 3px;		
+    border-radius: 8px;			
+    pointer-events: none;		
+}
+
+.na, .an, .nan {
+	fill: #00cc00;
+	background-color: #00cc00;
+}
+
+.ac {
+	fill: #ff0000;
+	background-color: #ff0000;
+}
+
+.by_the, .by {
+	fill: #0000ff;
+	background-color: #0000ff;
+	color: #ffff;
+}
+
+.on_the, .en_le, .on, .upon, .en {
+	fill: #ff00ff;
+	background-color: #ff00ff;
+}
+
+.and {
+	fill: #999999;
+	background-color: #999999;
+}
+
+.of, .de, .de_la {
+	fill: #ffff00;
+	background-color: #ffff00;
+}
+
+.cum, .with {
+	fill: #00cccc;
+	background-color: #00cccc;
+}
+
+.in_the, .in {
+	fill: #884488;
+	background-color: #884488;
+	color: #ffffff;
+}
+
+.near, .next, .next_the, .juxta {
+	fill: #ff3388;
+	background-color: #ff3388;
+}
+
+.at, .atte {
+	fill: #E9EBF8;
+	background-color: #E9EBF8;
+}
+
+.over, .super {
+	fill: #232E21;
+	background-color: #232E21;
+	color: #ffffff;
+}
+
+.under, .sub {
+	fill: #D7D8F3;
+	background-color: #D7D8F3;
+}
+
+.within, .without {
+	fill: #FFC857;
+	background-color: #FFC857;
+}
+
+.gyda {
+	fill: #E84855;
+	background-color: #E84855;
+}
+
+.le {
+	fill: #586994;
+	background-color: #586994;
+	color: #ffffff;
+}
+
+.label {
+    position: absolute;			
+    width: 200px;					
+    height: 20px;
+	padding: 5px;
+}
+
+</style>
+
+
+</head>
+
+<body>
+
+<div class="ui-widget">
+	<label for="placeName">Place name: </label>
+	<input id="placeName">
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+<script src="https://d3js.org/d3.v4.js"></script>
+<script src="https://d3js.org/topojson.v1.min.js"></script>
+<script src="https://d3js.org/d3-array.v2.min.js"></script>
+<script src="https://d3js.org/d3-color.v1.min.js"></script>
+<script src="https://d3js.org/d3-format.v1.min.js"></script>
+<script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+<script src="https://d3js.org/d3-time.v1.min.js"></script>
+<script src="https://d3js.org/d3-time-format.v2.min.js"></script>
+<script src="https://d3js.org/d3-scale.v3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/1.1.0/d3-legend.js"></script>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  
+<script>
+
+var availablePlaces = [];
+
+$(function() {
+
+$("#placeName").autocomplete({
+	source: availablePlaces,
+	select: placeSelected
+	});
+});
+
+var roundTo2DP = function (x) {
+	return (Math.round(x * 100) / 100).toFixed(2);
+}
+
+var width = 1000,
+    height = 1160;
+
+var keyElements = [
+{label:"and", colour:"and", searchText:".and"},
+{label:"na, an, nan", colour:"an", searchText:".na, .an, .nan"},
+{label:"of, de, de la", colour:"de", searchText:".of, .de, .de_la"},
+{label:"ac", colour:"ac", searchText:".ac"},
+{label:"cum, with", colour:"with", searchText:".cum, .with"},
+{label:"by the, by", colour:"by", searchText:".by_the, .by"},
+{label:"in the, in", colour:"in", searchText:".in_the, .in"},
+{label:"near, next, next the, juxta", colour:"next", searchText:".near, .next, .next_the .juxta"},
+{label:"at, atte", colour:"atte", searchText:".at, .atte"},
+{label:"over, super", colour:"super", searchText:".over, .super"},
+{label:"on the, en le, on, upon, en", colour:"on", searchText:".on_the, .en_le, .on, .upon, .en"},
+{label:"under, sub", colour:"sub", searchText:".under, .sub"},
+{label:"without", colour:"without", searchText:".without"},
+{label:"gyda", colour:"gyda", searchText:".gyda"},
+{label:"le", colour:"le", searchText:".le"}
+];
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+var div = d3.select("body").append("div")	
+    .attr("class", "tooltip")				
+    .style("opacity", 0);
+
+var keyBaseline = 50;
+var offsetPerElement = 35;
+var bigDot = "5px";
+var smallDot = "2px";
+
+for(i=0; i < keyElements.length; i++) {
+
+	d3.select("body").append("div")
+		.attr("class", keyElements[i].colour + " label")
+		.attr("searchText", keyElements[i].searchText)
+		.html(keyElements[i].label)
+		.style("left", "30px")		
+		.style("top", (keyBaseline + i * offsetPerElement) + "px")
+		.on("mouseover", handleMouseOver)
+		.on("mouseout", handleMouseOut);
+}
+
+function handleMouseOver(d, i) {
+	selectorForDotsToChange = d3.select(this).attr("searchText");
+	d3.selectAll(selectorForDotsToChange).attr("r", bigDot);
+}
+
+function handleMouseOut(d, i) {
+	selectorForDotsToChange = d3.select(this).attr("searchText");
+	d3.selectAll(selectorForDotsToChange).attr("r", smallDot);
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function placeSelected(e, i) {
+	
+	var selectedPlaceName = i.item.label;
+	var selector = '[data-name="' + selectedPlaceName + '"]';
+	
+	console.log(selector);
+	
+	changeSelectedThingsSize(selector, "50px");
+	setTimeout(function(){changeSelectedThingsSize(selector, smallDot);}, 1000);
+	
+}
+
+function changeSelectedThingsSize(selector, newSize) {
+		d3.selectAll(selector)
+		  .transition(500)
+		  .attr("r", newSize);
+}
+
+
+d3.json("compound_names.json", function(error, uk) {
+
+	for(p = 0; p < uk.objects.places.geometries.length; p++) {
+		availablePlaces.push(uk.objects.places.geometries[p].properties.name);
+	}
+
+	var projection = d3.geo.albers()
+		.center([0, 55.4])
+		.rotate([4.4, 0])
+		.parallels([50, 60])
+		.scale(6000)
+		.translate([width / 2, height / 2]);
+
+	var path = d3.geo.path()
+		.projection(projection);
+
+	var subunits = topojson.feature(uk, uk.objects.subunits);
+
+	svg.selectAll(".subunit")
+		.data(topojson.feature(uk, uk.objects.subunits).features)
+		.enter().append("path")
+		.attr("class", function(d) { return "subunit " + d.id; })
+		.attr("d", path);
+
+	svg.append("path")
+		.datum(topojson.mesh(uk, uk.objects.subunits, function(a, b) { return a === b && a.id !== "IRL"; }))
+		.attr("d", path)
+		.attr("class", "subunit-boundary UK");
+
+	svg.append("path")
+		.datum(topojson.mesh(uk, uk.objects.subunits, function(a, b) { return a === b && a.id === "IRL"; }))
+		.attr("d", path)
+		.attr("class", "subunit-boundary IRL");
+
+	svg.selectAll("circle")
+		.data(topojson.feature(uk, uk.objects.places).features)
+		.enter()
+		.append("circle")
+		.attr("r", smallDot)
+		.attr("class", function(d) {return d.properties.class;})
+		.attr("data-name", function(d) { return d.properties.name;})
+		.attr("transform", function(d) { return "translate(" + projection(d.geometry.coordinates) + ")"; })
+		.on("mouseover", function(d) {		
+            div.transition()		
+                .duration(200)		
+                .style("opacity", 1);		
+            div.html("(" + roundTo2DP(d.geometry.coordinates[0]) + ", " + roundTo2DP(d.geometry.coordinates[1]) + ")<br/>" + d.properties.name)	
+                .style("left", (d3.event.pageX) + "px")		
+                .style("top", (d3.event.pageY - 28) + "px");	
+            })					
+        .on("mouseout", function(d) {		
+            div.transition()		
+                .duration(500)		
+                .style("opacity", 0);	
+        });
+	   
+});
+
+</script>
+</body>
+</html>
