@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Boids algorithm to simulate flocking birds</title>
+  
+  <script src="mathbox-bundle.js"></script>
+  <link rel="stylesheet" href="mathbox.css">
+
+  <script src="jquery-3.5.1.min.js"></script>
+
+  <script src="rangeslider.min.js"></script>
+  <link rel="stylesheet" href="rangeslider.css">
+  
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+</head>
+<body>
+	<div id="controls" style="margin-top:0; ">
+		<button id="reset" type="submit" onclick="resetValues()">Reset values</button>
+	
+		<label for="maxSpeed">Max speed</label>
+		<input id="maxSpeed" type="range" />
+		
+		<label for="visualRange">Visual range</label>
+		<input id="visualRange" type="range" />
+		
+		<label for="centringFactor">Centring factor</label>
+		<input id="centringFactor" type="range" />
+
+		<label for="avoidFactor">Avoid factor</label>
+		<input id="avoidFactor" type="range" />
+
+		<label for="matchingFactor">Matching factor</label>
+		<input id="matchingFactor" type="range" />		
+		
+		<button id="restart" type="submit" onclick="restartBoids()">Restart boids</button>
+	</div>
+	
+	<script src="boids.js"></script>
+</body>
+</html>
