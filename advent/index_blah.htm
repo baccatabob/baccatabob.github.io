@@ -16,8 +16,10 @@ const cookieName = 'adventCalendar';
 
 (function(angular) {
   'use strict';
-angular.module('adventCalendar', ['ngCookies']).controller('AdventCalendarController',
-function($scope, $window, $cookies) {
+angular.module('adventCalendar', ['ngCookies'])
+.controller('AdventCalendarController', ['$sce', '$cookies',
+
+function($scope, $window, $sce, $cookies) {
 
 $scope.doors = [
 {day:1,
@@ -74,6 +76,10 @@ $scope.openDoor = function(dayNum) {
   	$cookies.put(cookieName, allOpenedDoors, {'expires': expireDate});
 };
 
+$scope.getUrl = function(dayNum) {
+	return $sce.trustAsResourceUrl($scope.doors[dayNum-1].url);
+};
+
 });
 })(window.angular);
 
@@ -87,7 +93,7 @@ $scope.openDoor = function(dayNum) {
 	<div ng-hide="door.opened" ng-click="openDoor(door.day)">
 		{{door.day}}
 	</div>
-	<iframe ng-show="door.opened" src="{{door.url}}">
+	<iframe ng-show="door.opened" ng-src="{{getURL(door.day)}}">
 	</iframe> 
 </div>
 
