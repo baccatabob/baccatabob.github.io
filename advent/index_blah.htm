@@ -14,8 +14,6 @@
 
 const cookieName = 'adventCalendar';
 
-// https://www.geeksforgeeks.org/how-to-set-get-and-clear-cookies-in-angularjs/
-
 (function(angular) {
   'use strict';
 angular.module('adventCalendar', ['ngCookies']).controller('AdventCalendarController',
@@ -23,13 +21,13 @@ function($scope, $window, $cookies) {
 
 $scope.doors = [
 {day:1,
- text:'apple',
+ url:'https://www.youtube.com/embed/nn5ken3RJBo',
  opened:false},
 {day:2,
- text:'banana',
+ url:'https://www.youtube.com/embed/U_Tux6tixN0',
  opened:false},
 {day:3,
- text:'cherry',
+ url:'https://www.youtube.com/embed/7qYeZcOioI',
  opened:false}
 ];
 
@@ -82,16 +80,19 @@ $scope.openDoor = function(dayNum) {
 </script>
 
 <div id="container" ng-app="adventCalendar" ng-controller="AdventCalendarController" ng-init="loadData()">
-Before doors
-<div ng-repeat="door in doors">
+
+<p>Before doors</p>
+
+<div height="315" width="420" ng-repeat="door in doors">
 	<div ng-hide="door.opened" ng-click="openDoor(door.day)">
 		{{door.day}}
 	</div>
-	<div ng-show="door.opened">
-		{{door.text}}
-	</div>
+	<iframe ng-show="door.opened" src="{{door.url}}">
+	</iframe> 
 </div>
-After doors
+
+<p>After doors</p>
+
 </div>
 
 </body>
