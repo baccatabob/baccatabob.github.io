@@ -70,7 +70,10 @@ $scope.openDoor = function(dayNum) {
 	
 	console.log("opened doors = " + allOpenedDoors);
 	
-	$cookies.put(cookieName, allOpenedDoors);
+	var expireDate = new Date();
+	expireDate.setDate(expireDate.getDate() + 365);
+  
+  	$cookies.put(cookieName, allOpenedDoors, {'expires': expireDate});
 };
 
 });
