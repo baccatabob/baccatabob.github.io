@@ -8,6 +8,9 @@ angular.module('adventCalendar', ['ngCookies'])
 function ($scope, $window, $sce, $cookies) {
 
 $scope.loadData = function() {
+	
+	$scope.doors = doors;
+	
 	var alreadyOpened = $cookies.get(cookieName);
 	
 	console.log("alreadyOpened = " + alreadyOpened);
@@ -16,7 +19,7 @@ $scope.loadData = function() {
 		var openedDoors = alreadyOpened.split(",");
 		
 		angular.forEach(openedDoors, function(d) {
-			doors[d-1].opened = true;
+			$scope.doors[d-1].opened = true;
 		});
 	}
 };
@@ -24,7 +27,7 @@ $scope.loadData = function() {
 $scope.extractOpenDoorNumbers = function () {
 	var openedDoors = [];
 	
-	angular.forEach(doors, function(d) {
+	angular.forEach($scope.doors, function(d) {
 		if (d.opened) {
 			openedDoors.push(d.day);
 		}
@@ -39,7 +42,7 @@ $scope.openDoor = function(dayNum) {
 
 	// wombat put something in here to check that this door isn't for the future
 
-	doors[dayNum-1].opened = true;
+	$scope.doors[dayNum-1].opened = true;
 	var allOpenedDoors = $scope.extractOpenDoorNumbers();
 	
 	console.log("opened doors = " + allOpenedDoors);
@@ -51,7 +54,7 @@ $scope.openDoor = function(dayNum) {
 };
 
 $scope.getUrl = function(dayNum) {
-	return $sce.trustAsResourceUrl(doors[dayNum-1].url);
+	return $sce.trustAsResourceUrl($scope.doors[dayNum-1].url);
 };
 
 }]);
