@@ -9,7 +9,7 @@ function ($scope, $window, $sce, $cookies) {
 
 $scope.loadData = function() {
 	
-	$scope.doors = doors;
+	$scope.doors = $window.doors;
 	
 	var alreadyOpened = $cookies.get(cookieName);
 	
