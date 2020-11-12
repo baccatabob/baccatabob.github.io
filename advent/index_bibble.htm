@@ -23,15 +23,15 @@ var doors = [
   
 <body>
 
-<div id="container" ng-app="adventCalendar" ng-controller="AdventCalendarController" ng-init="loadData()">
+<div id="container" ng-app="adventCalendar" ng-controller="AdventCalendarController as ctrl" ng-init="loadData()">
 
 <p>Before doors</p>
 
-<div height="315" width="420" ng-repeat="door in doors">
-	<div ng-hide="door.opened" ng-click="openDoor(door.day)">
+<div height="315" width="420" ng-repeat="door in ctrl.doors">
+	<div ng-hide="door.opened" ng-click="ctrl.openDoor(door.day)">
 		{{door.day}}
 	</div>
-	<iframe ng-show="door.opened" ng-src="{{getURL(door.day)}}">
+	<iframe ng-show="door.opened" ng-src="{{ctrl.getURL(door.day)}}">
 	</iframe> 
 </div>
 
