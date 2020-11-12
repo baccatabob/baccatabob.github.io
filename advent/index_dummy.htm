@@ -1,0 +1,31 @@
+<!DOCTYPE html> 
+<html> 
+
+<head> 
+<title>Advent calendar</title> 
+</head> 
+
+<body>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script> 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-cookies.js"></script> 
+
+<script type="text/javascript" src="script2.js"></script>
+
+<div id="container" ng-app="adventCalendar" ng-controller="AdventCalendarController" ng-init="loadData()">
+Before doors
+<div ng-repeat="door in doors">
+	<div ng-hide="door.opened" ng-click="openDoor(door.day)">
+		{{door.day}}
+	</div>
+	<div ng-show="door.opened">
+		{{door.text}}
+	</div>
+</div>
+After doors
+</div>
+
+</body>
+
+
+</html> 
