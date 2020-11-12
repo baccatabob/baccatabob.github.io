@@ -1,0 +1,46 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+  
+<head>
+
+<meta charset="UTF-8">
+<title>Advent calendar</title> 
+
+<script type="text/javascript">
+
+var doors = [
+{day:1, url:'https://www.youtube.com/embed/nn5ken3RJBo',  opened:false},
+{day:2, url:'https://www.youtube.com/embed/U_Tux6tixN0', opened:false},
+{day:3, url:'https://www.youtube.com/embed/7qYeZcOioI', opened:false}
+]
+
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script> 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-cookies.js"></script> 
+<script src="script.js"></script>
+
+</head> 
+  
+<body>
+
+<div id="container" ng-app="adventCalendar" ng-controller="AdventCalendarController" ng-init="loadData()">
+
+<p>Before doors</p>
+
+<div height="315" width="420" ng-repeat="door in doors">
+	<div ng-hide="door.opened" ng-click="openDoor(door.day)">
+		{{door.day}}
+	</div>
+	<iframe ng-show="door.opened" ng-src="{{getURL(door.day)}}">
+	</iframe> 
+</div>
+
+<p>After doors</p>
+
+</div>
+
+</body>
+
+
+</html>
