@@ -12,15 +12,48 @@
 
 <script type="text/javascript" src="script2.js"></script>
 
+<style>
+
+.shutDoor {
+    display:block;
+    height: 100%;
+    width: 100%;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+}
+
+.openDoor {
+    display:block;
+    height: 100%;
+    width: 100%;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+}
+
+iframe {
+    display:block;
+    height: 100%;
+    width: 100%;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+}
+
+</style>
+
 <div id="container" ng-app="adventCalendar" ng-controller="AdventCalendarController" ng-init="loadData()">
 Before doors
-<div ng-repeat="door in doors">
-	<div ng-hide="door.opened" ng-click="openDoor(door.day)">
+<div class="door" width="560" height="315" ng-repeat="door in doors">
+	<div class="shutDoor" ng-hide="door.opened" ng-click="openDoor(door.day)">
 		{{door.day}}
 	</div>
-	<div ng-show="door.opened">
-		{{door.text}}
-		<iframe width="560" height="315" src="{{getVideoUrl(door.day)}}" frameborder="0"
+	<div class="openDoor" ng-show="door.opened">
+		<iframe src="{{getVideoUrl(door.day)}}" frameborder="0"
 			allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
 		</iframe>
 	</div>
@@ -28,20 +61,6 @@ Before doors
 After doors
 </div>
 
-<!--
-
-<iframe width="560" height="315"
-		src="https://www.youtube.com/embed/nn5ken3RJBo"
-		frameborder="0"
-		allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-		allowfullscreen>
-</iframe>
-
-
--->
-
-
 </body>
-
 
 </html> 
