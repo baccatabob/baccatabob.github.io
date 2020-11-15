@@ -1,15 +1,12 @@
-
-// https://www.geeksforgeeks.org/how-to-set-get-and-clear-cookies-in-angularjs/
-
 (function(angular) {
   'use strict';
 angular.module('adventCalendar', ['ngCookies']).controller('AdventCalendarController',
-function($scope, $window, $cookies) {
+function($scope, $window, $cookies, $sce) {
 
 $scope.doors = [
-{day:1, text:'apple', opened:false},
-{day:2, text:'banana', opened:false},
-{day:3, text:'cherry', opened:false}
+{day:1, text:'apple', opened:false, videoId:'nn5ken3RJBo'},
+{day:2, text:'banana', opened:false, videoId:'U_Tux6tixN0'},
+{day:3, text:'cherry', opened:false, videoId:'Y7uhbiUs6eY'}
 ];
 
 const cookieName = 'adventCalendar';
@@ -55,6 +52,15 @@ $scope.openDoor = function(dayNum) {
 	expireDate.setDate(expireDate.getDate() + 365);
 
 	$cookies.put(cookieName, allOpenedDoors, {'expires': expireDate});
+};
+
+$scope.getVideoUrl = function(dayNum) {
+	var videoId = $scope.doors[dayNum-1].videoId;
+	var fullUrl = 'https://www.youtube.com/embed/' + videoId;
+
+	console.log('about to trust ' + fullUrl);
+
+	return $sce.trustAsResourceUrl(fullUrl);
 };
 
 });
