@@ -14,6 +14,11 @@
 
 <style>
 
+.door {
+	width: 200px;
+	height: 121px;
+}
+
 .shutDoor {
     display:block;
     height: 100%;
@@ -48,7 +53,7 @@ iframe {
 
 <div id="container" ng-app="adventCalendar" ng-controller="AdventCalendarController" ng-init="loadData()">
 Before doors
-<div class="door" width="560" height="315" ng-repeat="door in doors">
+<div class="door" ng-repeat="door in doors">
 	<div class="shutDoor" ng-hide="door.opened" ng-click="openDoor(door.day)">
 		{{door.day}}
 	</div>
