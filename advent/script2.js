@@ -20,7 +20,7 @@ $scope.loadData = function() {
 	console.log("alreadyOpened = " + alreadyOpened);
 
 	if (alreadyOpened) {
-		openedDoors = alreadyOpened.split(",");
+		var openedDoors = alreadyOpened.split(",");
 
 		angular.forEach(openedDoors, function(d) {
 			$scope.doors[d-1].opened = true;
