@@ -47,7 +47,7 @@
 
 <main id="gridContainer" ng-app="adventCalendar" ng-controller="AdventCalendarController" ng-init="loadData()">
 
-<div class="door fullSize" ng-repeat="door in doors|orderBy:random">
+<div class="door fullSize" ng-repeat="door in doors | orderBy: random track by door.day">
 	<div class="shutDoor fullSize" ng-hide="door.opened" ng-click="openDoor(door.day)">
 		<p>{{door.day}}</p>
 	</div>
