@@ -83,8 +83,6 @@ $scope.openDoor = function(dayNum) {
 	$scope.doors[dayNum-1].opened = true;
 	var allOpenedDoors = $scope.extractOpenDoorNumbers();
 
-	console.log("opened doors = " + allOpenedDoors);
-
 	var expireDate = new Date();
 	expireDate.setDate(expireDate.getDate() + 365);
 
@@ -95,10 +93,12 @@ $scope.getVideoUrl = function(dayNum) {
 	var videoId = $scope.doors[dayNum-1].videoId;
 	var fullUrl = 'https://www.youtube.com/embed/' + videoId;
 
-	console.log('about to trust ' + fullUrl);
-
 	return $sce.trustAsResourceUrl(fullUrl);
 };
+
+$scope.random = function() {
+	return 0.5 - Math.random();
+}
 
 angular.element(function () {
     setDoorHeight();

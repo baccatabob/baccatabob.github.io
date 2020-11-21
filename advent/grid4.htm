@@ -14,19 +14,22 @@
 	grid-gap: 1rem 1rem;
 }
 
-.door {
+.fullSize {
 	width: 100%;
 	height: 100%;
 }
 
-.openDoor {
-	width: 100%;
-	height: 100%;
+.shutDoor {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: green;
 }
 
-iframe {
-	width: 100%;
-	height: 100%;
+.shutDoor p {
+	font-size: x-large;
+	font-weight: bold;
+	color: white;
 }
 
 </style>
@@ -44,11 +47,11 @@ iframe {
 
 <main id="gridContainer" ng-app="adventCalendar" ng-controller="AdventCalendarController" ng-init="loadData()">
 
-<div class="door" ng-repeat="door in doors">
-	<div class="shutDoor" ng-hide="door.opened" ng-click="openDoor(door.day)">
-		{{door.day}}
+<div class="door fullSize" ng-repeat="door in doors|orderBy:random">
+	<div class="shutDoor fullSize" ng-hide="door.opened" ng-click="openDoor(door.day)">
+		<p>{{door.day}}</p>
 	</div>
-	<div class="openDoor" ng-show="door.opened">
+	<div class="openDoor fullSize" ng-show="door.opened">
 		<iframe src="{{getVideoUrl(door.day)}}" frameborder="0"
 			allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
 		</iframe>
