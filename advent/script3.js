@@ -1,3 +1,16 @@
+function setDoorHeight() {
+
+	const ratio = 0.605;	// 121 / 200
+
+	let doors = document.getElementsByClassName('door');
+	let doorWidth = doors[0].offsetWidth;
+	let doorHeight = Math.floor(doorWidth * ratio) + 'px';
+	
+	for(var i=0; i < doors.length; i++) {
+		doors[i].style.height = doorHeight;
+	}
+}
+
 (function(angular) {
   'use strict';
 angular.module('adventCalendar', ['ngCookies']).controller('AdventCalendarController',
@@ -87,20 +100,9 @@ $scope.getVideoUrl = function(dayNum) {
 	return $sce.trustAsResourceUrl(fullUrl);
 };
 
-function setDoorHeight() {
-
-	const ratio = 0.605;	// 121 / 200
-
-	let doors = document.getElementsByClassName('door');
-	let doorWidth = doors[0].offsetWidth;
-	let doorHeight = Math.floor(doorWidth * ratio) + 'px';
-	
-	for(var i=0; i < doors.length; i++) {
-		doors[i].style.height = doorHeight;
-	}
-}
-
-setDoorHeight();
+angular.element(function () {
+    setDoorHeight();
+});
 
 });
 })(window.angular);
