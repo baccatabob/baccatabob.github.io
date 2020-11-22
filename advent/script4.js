@@ -71,6 +71,7 @@ $scope.loadData = function() {
 $scope.everythingLoaded = function () {
 	$scope.loading = false;
 	$scope.displayCalendar = $scope.foundCookie;
+	$scope.$apply();
 };
 
 $scope.extractOpenDoorNumbers = function () {
