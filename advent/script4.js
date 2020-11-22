@@ -113,7 +113,7 @@ $scope.cookieModalDismissed = function() {
 	$scope.displayCalendar = true;
 };
 
-angular.element(function() {
+$scope.$on('$routeChangeSuccess', function() {
 	console.log('loaded?');
 	setDoorHeight();
 	$scope.everythingLoaded();
