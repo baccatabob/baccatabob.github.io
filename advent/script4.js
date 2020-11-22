@@ -113,15 +113,9 @@ $scope.cookieModalDismissed = function() {
 	$scope.displayCalendar = true;
 };
 
-angular.element(function () {
-    setDoorHeight();
-	
-	var elem = angular.element(document.getElementById('acCtrl'));
-    var injector = elem.injector();
-    var $rootScope = injector.get('$rootScope');   
-    $rootScope.$apply(function(){
-       $rootScope.everythingLoaded();
-    });
+$scope.$on('$viewContentLoaded', function(event){
+	setDoorHeight();
+	$scope.everythingLoaded();
 });
 
 });
