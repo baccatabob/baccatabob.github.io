@@ -113,10 +113,11 @@ $scope.cookieModalDismissed = function() {
 	$scope.displayCalendar = true;
 };
 
-$scope.$on('$viewContentLoaded', function(event){
+angular.element(function() {
 	console.log('loaded?');
 	setDoorHeight();
 	$scope.everythingLoaded();
+	console.log('really?');
 });
 
 });
