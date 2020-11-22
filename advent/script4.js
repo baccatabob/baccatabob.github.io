@@ -69,9 +69,10 @@ $scope.loadData = function() {
 };
 
 $scope.everythingLoaded = function () {
-	$scope.loading = false;
-	$scope.displayCalendar = $scope.foundCookie;
-	$scope.$apply();
+	$scope.$apply(function() {
+		$scope.loading = false;
+		$scope.displayCalendar = $scope.foundCookie;
+	});
 };
 
 $scope.extractOpenDoorNumbers = function () {
