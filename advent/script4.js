@@ -12,7 +12,8 @@ function setDoorHeight() {
 	
 	let scope = angular.element(document.getElementById('acCtrl')).scope();
 
-	scope.$apply(function() { scope.everythingLoaded(); });
+	scope.everythingLoaded();
+	scope.$apply();
 }
 
 (function(angular) {
