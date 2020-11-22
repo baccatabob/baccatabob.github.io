@@ -9,6 +9,8 @@ function setDoorHeight() {
 	for(var i=0; i < doors.length; i++) {
 		doors[i].style.height = doorHeight;
 	}
+	
+	angular.element(document.getElementById('acCtrl')).scope().everythingLoaded();
 }
 
 (function(angular) {
@@ -115,7 +117,6 @@ $scope.cookieModalDismissed = function() {
 
 angular.element(function () {
     setDoorHeight();
-	document.getElementById('acCtrl').scope().everythingLoaded();
 });
 
 });
