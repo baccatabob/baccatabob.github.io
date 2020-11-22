@@ -114,6 +114,7 @@ $scope.cookieModalDismissed = function() {
 };
 
 $scope.$on('$viewContentLoaded', function(event){
+	console.log('loaded?');
 	setDoorHeight();
 	$scope.everythingLoaded();
 });
