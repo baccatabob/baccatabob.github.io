@@ -10,7 +10,9 @@ function setDoorHeight() {
 		doors[i].style.height = doorHeight;
 	}
 	
-	angular.element(document.getElementById('acCtrl')).scope().everythingLoaded();
+	let scope = angular.element(document.getElementById('acCtrl')).scope();
+
+	scope.$apply(function() { scope.everythingLoaded(); });
 }
 
 (function(angular) {
@@ -69,10 +71,8 @@ $scope.loadData = function() {
 };
 
 $scope.everythingLoaded = function () {
-	$scope.$apply(function() {
-		$scope.loading = false;
-		$scope.displayCalendar = $scope.foundCookie;
-	});
+	$scope.loading = false;
+	$scope.displayCalendar = $scope.foundCookie;
 };
 
 $scope.extractOpenDoorNumbers = function () {
