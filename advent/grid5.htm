@@ -43,7 +43,7 @@
 
 <body onresize="setDoorHeight()">
 
-	<main ng-app="adventCalendar" ng-controller="AdventCalendarController" ng-init="loadData()">
+	<main id="acCtrl" ng-app="adventCalendar" ng-controller="AdventCalendarController" ng-init="loadData()">
 
 		<div ng-show="!displayCalendar">
 			<div ng-if="foundCookie">

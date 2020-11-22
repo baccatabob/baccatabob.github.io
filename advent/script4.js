@@ -64,7 +64,9 @@ $scope.loadData = function() {
 			$scope.doors[d-1].opened = true;
 		});
 	}
-	
+};
+
+$scope.everythingLoaded = function () {
 	$scope.loading = false;
 	$scope.displayCalendar = $scope.foundCookie;
 };
@@ -113,6 +115,7 @@ $scope.cookieModalDismissed = function() {
 
 angular.element(function () {
     setDoorHeight();
+	document.getElementById('acCtrl').scope().everythingLoaded();
 });
 
 });
