@@ -10,8 +10,12 @@ function setDoorHeight() {
 		doors[i].style.height = doorHeight;
 	}
 
-	angular.element(document.getElementById('acCtrl')).scope().everythingLoaded();
-	angular.element(document.getElementById('acCtrl')).scope().$apply();
+    var elem = angular.element(document.getElementById('acCtrl')));
+    var injector = elem.injector();
+    var $rootScope = injector.get('$rootScope');   
+    $rootScope.$apply(function(){
+       $rootScope.everythingLoaded();
+    });
 }
 
 (function(angular) {
