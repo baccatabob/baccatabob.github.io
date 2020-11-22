@@ -64,6 +64,9 @@ $scope.loadData = function() {
 			$scope.doors[d-1].opened = true;
 		});
 	}
+	
+	$scope.loading = false;
+	$scope.displayCalendar = $scope.foundCookie;
 };
 
 $scope.extractOpenDoorNumbers = function () {
@@ -110,8 +113,6 @@ $scope.cookieModalDismissed = function() {
 
 angular.element(function () {
     setDoorHeight();
-	$scope.loading = false;
-	$scope.displayCalendar = $scope.foundCookie;
 });
 
 });
