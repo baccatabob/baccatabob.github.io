@@ -65,8 +65,6 @@ $scope.loadData = function() {
 	
 	var alreadyOpened = $cookies.get(cookieName);
 
-	console.log("alreadyOpened = " + alreadyOpened);
-
 	if (alreadyOpened) {
 		var openedDoors = alreadyOpened.split(",");
 
@@ -92,7 +90,7 @@ $scope.extractOpenDoorNumbers = function () {
 
 $scope.openDoor = function(dayNum) {
 
-	if (dayNum > today) {
+	if (dayNum > $scope.today) {
 		return;
 	}
 	
