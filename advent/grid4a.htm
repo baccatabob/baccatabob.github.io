@@ -58,7 +58,7 @@ var videoIds = [
 
 <main id="gridContainer" ng-app="adventCalendar" ng-controller="AdventCalendarController" ng-init="loadData()">
 
-<div class="door fullSize" ng-repeat="door in doors">
+<div class="door fullSize" ng-repeat="door in doors | orderBy: 'position'">
 	<div class="shutDoor fullSize" ng-if="!door.opened" ng-click="openDoor(door.day)">
 		<p>{{door.day}}</p>
 	</div>
