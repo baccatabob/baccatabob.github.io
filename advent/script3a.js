@@ -46,7 +46,7 @@ $scope.doors = [];
 // cxqQtUQErhQ
 // j8N2YTikOsc
 // cjtYgGN3z6U
-];
+//];
 
 $scope.today = '';
 
