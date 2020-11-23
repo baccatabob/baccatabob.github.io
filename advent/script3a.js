@@ -16,7 +16,8 @@ function setDoorHeight() {
 angular.module('adventCalendar', ['ngCookies']).controller('AdventCalendarController',
 function($scope, $window, $cookies, $sce) {
 
-$scope.doors = [
+$scope.doors = [];
+/*
 {day:1, opened:false, videoId:'nn5ken3RJBo'},
 {day:2, opened:false, videoId:'U_Tux6tixN0'},
 {day:3, opened:false, videoId:'Y7uhbiUs6eY'},
@@ -41,6 +42,7 @@ $scope.doors = [
 {day:22, opened:false, videoId:'2Bayi6ETui8'},
 {day:23, opened:false, videoId:'NaJ5FnM0Bzo'},
 {day:24, opened:false, videoId:'BIPTE84l9ls'}
+*/
 // cxqQtUQErhQ
 // j8N2YTikOsc
 // cjtYgGN3z6U
@@ -49,11 +51,17 @@ $scope.doors = [
 $scope.today = '';
 
 const cookieName = 'adventCalendar';
+const numDays = 24;
 
 $scope.loadData = function() {
 	
 	var date = new Date();
 	$scope.today = date.getDate();
+	
+	for(var i=0; i<numDays; i++) {
+
+		$scope.doors.push({day: i+1, opened: false, videoId: videoIds[i]});
+	}
 	
 	var alreadyOpened = $cookies.get(cookieName);
 
@@ -84,6 +92,10 @@ $scope.extractOpenDoorNumbers = function () {
 
 $scope.openDoor = function(dayNum) {
 
+	if (dayNum > today) {
+		return;
+	}
+	
 	$scope.doors[dayNum-1].opened = true;
 	var allOpenedDoors = $scope.extractOpenDoorNumbers();
 
