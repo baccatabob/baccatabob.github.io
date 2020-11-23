@@ -1,0 +1,82 @@
+<!DOCTYPE html> 
+<html> 
+
+<head>
+<title>Demo Advent Calendar</title>
+
+<style>
+
+#gridContainer {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	grid-auto-rows: max-content;
+	
+	grid-gap: 1rem 1rem;
+}
+
+.fullSize {
+	width: 100%;
+	height: 100%;
+}
+
+.shutDoor {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: green;
+}
+
+.shutDoor p {
+	font-size: x-large;
+	font-weight: bold;
+	color: white;
+}
+
+</style>
+
+<script type="text/javascript">
+
+var videoIds = [
+'0iRTB-FTMdk','fiRPBCiJg2c','NmSKoTJ_UjE','DBxdTkddHaE','hui6u_DyxBs','gn2RGPqe_A',
+'xpJ8EoGmLuE','xe-f4gokRBs','_dQJBBklpQQ','zsXWspo5hrc','KU9Z6WivvOg','ugqQlB5fpuc',
+'ENeCYwms-Cc','39AA6kFmpWY','YfLvuH41sg8','7Bia-dNcBm4','LXf3W91OLX0','iJnAJFT7MfU',
+'aokNwKx7gM8','Xmm_BLyzXbk','q65O3qA0-n4','-cEBguJj3dg','rNu8XDBSn10','_UoTTq651dE'
+];
+
+const cookieName = 'adventCalendar_demo';
+
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script> 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-cookies.js"></script> 
+
+<script type="text/javascript" src="script5.js"></script>
+
+</head>
+
+<body onresize="setDoorHeight()">
+
+<p>Before doors - blurb about cookies etc.</p>
+
+	<main id="gridContainer" ng-app="adventCalendar" ng-controller="AdventCalendarController" ng-init="loadData()">
+
+		<div class="door fullSize" ng-repeat="door in doors | orderBy: 'position'">
+			<div class="shutDoor fullSize" ng-if="!door.opened" ng-click="openDoor(door.day)">
+				<p>{{door.day}}</p>
+			</div>
+			<div class="openDoor fullSize" ng-show="door.opened" ng-if="door.day <= today" >
+				<iframe class="fullSize" src="{{getVideoUrl(door.day)}}" frameborder="0"
+					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+				</iframe>
+			</div>
+		</div>
+
+	</main>
+
+</body>
+
+</html>
+
+
+
+
