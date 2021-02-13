@@ -82,8 +82,6 @@ $scope.openDoor = function(dayNum) {
 		return;
 	}
 	
-	$scope.contents[dayNum] = getVideoUrl(dayNum);
-	
 	$scope.doors[dayNum-1].opened = true;
 	var allOpenedDoors = $scope.extractOpenDoorNumbers();
 
@@ -93,7 +91,7 @@ $scope.openDoor = function(dayNum) {
 	$cookies.put(cookieName, allOpenedDoors, {'expires': expireDate});
 };
 
-function getVideoUrl(dayNum) {
+$scope.getVideoUrl = function (dayNum) {
 	var videoId = $scope.doors[dayNum-1].videoId;
 	var fullUrl = 'https://www.youtube.com/embed/' + videoId;
 
