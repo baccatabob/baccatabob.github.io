@@ -1,0 +1,88 @@
+<!DOCTYPE html> 
+<html> 
+
+<head>
+<title>Happy Birthday Ted</title>
+
+<style>
+
+#gridContainer {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	grid-auto-rows: max-content;
+	
+	grid-gap: 1rem 1rem;
+}
+
+.fullSize {
+	width: 100%;
+	height: 100%;
+}
+
+.shutDoor {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: black;
+}
+
+.shutDoor p {
+	font-size: x-large;
+	font-weight: bold;
+	color: white;
+}
+
+</style>
+
+<script type="text/javascript">
+
+var videoIds = [
+'tNk-mlgXRp4','MReDjx1FIaE','ijxk-fgcg7c','hnpILIIo9ek','MZjAantupsA',
+'YrzPAiKEu6s','bnXkMNyc794','l3VqAsMXE7o','XKKw-8jKYMI','BYdaF-vl130',
+'KueYEPOBzfU','SEJaV2X7XxY','JSG2qHBm7WM','WILyWmT2A-Q','NwgEELSShrU',
+'tAew5UOQXkY','6drfp_3823I','Ti6qhk3tX2s','pyxOh6MO0dI','EvvUzoWDc8c',
+'ogqcc0CkMIo','VW7evu7SJBA','giMgRlI7UEk','QO_CT3mcKrM','BBsazIACpYM',
+'vZAajrxvDs4','OSye8OO5TkM','roZMUyTzk0o','Rnr5FRJFPZw','435SDzZYz0E',
+'yARVs1ZNLjU','oq5X2G5qKQI','q8_HZ2jG_60','Jkqn0d2sAsw','E-2hSF7VJVI',
+'ZjuA_o6Jzyo','CxEoAiVleac','vjncyiuwwXQ','M6rrTROoZIw','TxrwImCJCqk',
+'T4NmnxHlPT0','_u4Md_aXVJE','LTfwj38O26c','2kdQ4soLcac','yZnpauGBTEU',
+'n2dTGcQgh88','Eco4z98nIQY','fdIpY3vfNYI','y1KAtnpVcPE','ORQX4QQwmII'
+];
+
+const cookieName = 'birthday_ted';
+
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script> 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-cookies.js"></script> 
+
+<script type="text/javascript" src="script6.js"></script>
+
+</head>
+
+<body onresize="setDoorHeight()">
+
+<p>This site uses cookies to remember which doors you've already opened.</p>
+
+	<main id="gridContainer" ng-app="BirthdayApp" ng-controller="BirthdayController" ng-init="loadData()">
+
+		<div class="door fullSize" ng-repeat="door in doors | orderBy: 'position'">
+			<div class="shutDoor fullSize" ng-if="!door.opened" ng-click="openDoor(door.day)">
+				<p>{{door.day}}</p>
+			</div>
+			<div class="openDoor fullSize" ng-show="door.opened" ng-if="door.day <= latestActiveDoor" >
+				<iframe class="fullSize" src="{{getIframeSrc(door.day)}}" srcdoc="{{getIframeSrcDoc(door.day)}}" frameborder="0"
+					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+				</iframe>
+			</div>
+		</div>
+
+	</main>
+
+</body>
+
+</html>
+
+
+
+
