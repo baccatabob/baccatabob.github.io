@@ -29,7 +29,7 @@ const numDays = 50;
 $scope.loadData = function() {
 	
 	$scope.today = new Date();
-	$scope.startDate = new Date("02/10/2021");
+	$scope.startDate = new Date("02/14/2021");
 	$scope.timeSinceStart = $scope.today.getTime() - $scope.startDate.getTime();
 	$scope.latestActiveDoor = Math.trunc($scope.timeSinceStart / (1000 * 3600 * 24)) + 1; 
 	
