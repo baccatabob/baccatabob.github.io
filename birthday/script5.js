@@ -17,19 +17,26 @@ angular.module('BirthdayApp', ['ngCookies']).controller('BirthdayController',
 function($scope, $window, $cookies, $sce) {
 
 $scope.doors = [];
+$scope.contents = [];
 
 $scope.today = '';
-$scope.startDate = new Date("02/11/2020");		// wombat make this 02/14/2021
+$scope.startDate = '';
+$scope.timeSinceStart = '';
+$scope.latestActiveDoor = '';
 
-const numDays = 46;
+const numDays = 50;
 
 $scope.loadData = function() {
 	
 	$scope.today = new Date();
+	$scope.startDate = new Date("02/14/2021");
+	$scope.timeSinceStart = $scope.today.getTime() - $scope.startDate.getTime();
+	$scope.latestActiveDoor = Math.trunc($scope.timeSinceStart / (1000 * 3600 * 24)) + 1; 
 	
 	for(var i=0; i<numDays; i++) {
 
 		$scope.doors.push({day: i+1, position: Math.random(), opened: false, videoId: videoIds[i]});
+		$scope.contents[i+1] = '';
 	}
 	
 	var alreadyOpened = $cookies.get(cookieName);
@@ -40,6 +47,17 @@ $scope.loadData = function() {
 		angular.forEach(openedDoors, function(d) {
 			$scope.doors[d-1].opened = true;
 		});
+	}
+	
+	for(var i=0; i<numDays; i++) {
+
+		var source = "https://img.youtube.com/vi/" + $scope.doors[i].videoId + "/default.jpg"
+
+		var image = new Image();
+        image.src = source;
+        image.addEventListener( "load", function() {
+            $scope.contents[i] = image;
+        }( i ) );
 	}
 };
 
@@ -59,9 +77,11 @@ $scope.extractOpenDoorNumbers = function () {
 
 $scope.openDoor = function(dayNum) {
 
-	if (!canOpenDoor(dayNum)) {
+	if (dayNum > $scope.latestActiveDoor) {
 		return;
 	}
+	
+	$scope.contents[dayNum] = getVideoUrl(dayNum);
 	
 	$scope.doors[dayNum-1].opened = true;
 	var allOpenedDoors = $scope.extractOpenDoorNumbers();
@@ -72,15 +92,7 @@ $scope.openDoor = function(dayNum) {
 	$cookies.put(cookieName, allOpenedDoors, {'expires': expireDate});
 };
 
-function canOpenDoor(dayNum) {
-	
-	var timeSinceStart = $scope.today.getTime() - $scope.startDate.getTime();
-	var daysSinceStart = timeSinceStart / (1000 * 3600 * 24); 
-	
-	return dayNum <= (daysSinceStart + 1);	// on the first day, daysSinceStart will be 0, but we want door 1 to be openable
-}
-
-$scope.getVideoUrl = function(dayNum) {
+function getVideoUrl(dayNum) {
 	var videoId = $scope.doors[dayNum-1].videoId;
 	var fullUrl = 'https://www.youtube.com/embed/' + videoId;
 
