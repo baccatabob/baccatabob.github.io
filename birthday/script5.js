@@ -48,7 +48,7 @@ $scope.loadData = function() {
 			$scope.doors[d-1].opened = true;
 		});
 	}
-	
+	/*
 	for(var i=0; i<numDays; i++) {
 
 		var source = "https://img.youtube.com/vi/" + $scope.doors[i].videoId + "/default.jpg"
@@ -59,6 +59,7 @@ $scope.loadData = function() {
             $scope.contents[i] = image;
         }( i ) );
 	}
+	*/
 };
 
 $scope.extractOpenDoorNumbers = function () {
