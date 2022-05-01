@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>French Mother and Daughter Sauces</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+.link {
+  fill: none;
+  stroke: #666;
+  stroke-width: 1.5px;
+}
+
+
+circle {
+  fill: #ccc;
+  stroke: #333;
+  stroke-width: 1.5px;
+}
+
+.Tomato {
+	fill: #f00;
+}
+
+.Espagnole {
+	fill: #FFA500;
+}
+
+.Bechamel {
+	fill: #FFFF00;
+}
+
+.Hollandaise {
+	fill: #0f0;
+}
+
+.Veloute {
+	fill: #00f;
+}
+
+.Mayonnaise {
+	fill: #9b26b6;
+}
+
+.node.fixed {
+  fill: #f00;
+}
+
+text {
+  font: 14px sans-serif;
+  pointer-events: none;
+  text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+}
+
+div.d3-tip {
+  line-height: 1.5;
+  font-family: sans-serif;
+  padding: 12px;
+  background: #555;
+  color: #F00;
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+.d3-tip p {
+  color: #ffffff;
+}
+
+</style>
+</head>
+<body>
+<!-- based on http://bl.ocks.org/Cosxin/0600c9f986dc91acdcef -->
+<script src="https://d3js.org/d3.v3.min.js"></script>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+
+<script>
+
+var links = [
+{source: " ", target: "B\xE9chamel", type: "Bechamel"},
+{source: " ", target: "Espagnole", type: "Espagnole"},
+{source: " ", target: "Tomato", type: "Tomato"},
+{source: " ", target: "Velout\xE9", type: "Veloute"},
+{source: " ", target: "Hollandaise", type: "Hollandaise"},
+{source: " ", target: "Mayonnaise", type: "Mayonnaise"},
+{source: "B\xE9chamel", target: "Cr\xE8me", type: "Bechamel"},
+{source: "B\xE9chamel", target: "Mornay", type: "Bechamel"},
+{source: "B\xE9chamel", target: "Ecossaise", type: "Bechamel"},
+{source: "B\xE9chamel", target: "Nantua", type: "Bechamel"},
+{source: "Espagnole", target: "Demi-glace", type: "Espagnole"},
+{source: "Demi-glace", target: "Poivrade", type: "Espagnole"},
+{source: "Demi-glace", target: "Grand veneur", type: "Espagnole"},
+{source: "Demi-glace", target: "Bigarade", type: "Espagnole"},
+{source: "Velout\xE9", target: "Allemande", type: "Veloute"},
+{source: "Allemande", target: "Poulette", type: "Veloute"},
+{source: "Velout\xE9", target: "Cardinal", type: "Veloute"},
+{source: "Velout\xE9", target: "Poulty velout\xE9", type: "Veloute"},
+{source: "Poulty velout\xE9", target: "Supr\xEAme", type: "Veloute"},
+{source: "Supr\xEAme", target: "Albuf\xE9ra", type: "Veloute"},
+{source: "Velout\xE9", target: "Fish velout\xE9", type: "Veloute"},
+{source: "Fish velout\xE9", target: "Bercy", type: "Veloute"},
+{source: "Fish velout\xE9", target: "Normande", type: "Veloute"},
+{source: "Tomato", target: "Bolognaise", type: "Tomato"},
+{source: "Tomato", target: "Portugaise", type: "Tomato"},
+{source: "Tomato", target: "Milanaise", type: "Tomato"},
+{source: "Hollandaise", target: "B\xE9arnaise", type: "Hollandaise"},
+{source: "Hollandaise", target: "Bavaroise", type: "Hollandaise"},
+{source: "Hollandaise", target: "Cr\xE8me fleurette", type: "Hollandaise"},
+{source: "Hollandaise", target: "Maltese", type: "Hollandaise"},
+{source: "Hollandaise", target: "Noisette", type: "Hollandaise"},
+{source: "B\xE9arnaise", target: "Foyot", type: "Hollandaise"},
+{source: "B\xE9arnaise", target: "Paloise", type: "Hollandaise"},
+{source: "B\xE9arnaise", target: "Choron", type: "Hollandaise"},
+{source: "Mayonnaise", target: "R\xE9moulade", type: "Mayonnaise"},
+{source: "Mayonnaise", target: "Tartar", type: "Mayonnaise"},
+{source: "Mayonnaise", target: "Gribiche", type: "Mayonnaise"},
+{source: "Mayonnaise", target: "Samourai", type: "Mayonnaise"}
+];
+
+var nodes = {};
+
+// Compute the distinct nodes from the links.
+links.forEach(function(link) {
+  link.source = nodes[link.source] || (nodes[link.source] = {name: link.source, type:link.source == " " ? "Centre" : link.type});
+  link.target = nodes[link.target] || (nodes[link.target] = {name: link.target, type:link.target == " " ? "Centre" : link.type});
+});
+
+var width = 960,
+    height = 700;
+
+var force = d3.layout.force()
+    .nodes(d3.values(nodes))
+    .links(links)
+    .size([width, height])
+    .linkDistance(100)
+    .charge(-300)
+    .on("tick", tick)
+    .start();
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+var tip = d3.tip().attr('class', 'd3-tip')
+	.html(function(d){
+		var x = links.filter(g=>g.source.name==d.name).map(t=>t.target.name).join(", ");
+		if (!x) {x = "None";}
+		
+		var y = links.filter(g=>g.target.name==d.name).map(t=>t.source.name).join(", ");
+		if (y == " ") {y = "None";}
+		
+		return "<p>" + d.name + "</p><p>" + "Children: " + x +  "</p><p>" + "Parent: " + y + "</p>";
+	});
+
+svg.call(tip);
+var path = svg.append("g").selectAll("path")
+    .data(force.links())
+	.enter().append("path")
+    .attr("class", function(d) { return "link " + d.type; })
+    .attr("marker-end", function(d) { return "url(#" + d.type + ")"; });
+
+var ct = svg.append("g").selectAll(".node")
+    .data(force.nodes())
+	.enter().append("g").attr("class","node");
+
+var circle = ct.append("circle")
+    .attr("r", 8)
+	.attr("class", function (d) {return d.type; });
+
+var clabel = ct.append("text")
+	.attr("dy",function(d){return 10;})
+	.text(function(d){return d.name;});
+
+ct.call(force.drag);
+ct.on("mouseover",tip.show).on("mouseout",tip.hide).on("dblclick",pin);
+
+function tick() {
+	path.attr("d", linkArc);
+	ct.attr("transform", transform);
+}
+
+// the original linked with an arc rather than with a straight line
+function linkArc(d) {
+	return "M" + d.source.x + "," + d.source.y + "L" + d.target.x + "," + d.target.y;
+}
+
+function transform(d) {
+	return "translate(" + d.x + "," + d.y + ")";
+}
+
+function pin(d){
+	d3.select(this).classed("fixed", d.fixed = !d.fixed);
+}
+
+</script>
+
+</body>
+</html>
