@@ -85,8 +85,7 @@ const cookieName = 'adventCalendar_bob';
 				<p>{{door.day}}</p>
 			</div>
 			<div class="openDoor fullSize" ng-show="door.opened" ng-if="door.day <= today" >
-				<iframe class="fullSize" src="{{getVideoUrl(door.day)}}" frameborder="0"
-					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+				<iframe class="fullSize" src="{{getVideoUrl(door.day)}}" frameborder="0" allowfullscreen>
 				</iframe>
 			</div>
 		</div>
