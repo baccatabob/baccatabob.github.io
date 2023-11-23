@@ -1,0 +1,100 @@
+<!DOCTYPE html> 
+<html> 
+
+<head>
+<title>Bob's Advent Calendar 2023 - a slightly seasonal selection</title>
+
+<style>
+
+#gridContainer {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	grid-auto-rows: max-content;
+	
+	grid-gap: 1rem 1rem;
+}
+
+.fullSize {
+	width: 100%;
+	height: 100%;
+}
+
+.shutDoor {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: green;
+}
+
+.shutDoor p {
+	font-size: x-large;
+	font-weight: bold;
+	color: white;
+}
+
+</style>
+
+<script type="text/javascript">
+
+var videoIds = [
+'OSye8OO5TkM',	// Hozier - Movement
+'bKbq5IvUZk0',	// Nordic Fiddle Bloc & Natalie Haas - Flinken
+'oeiKUcKNqOU',	// Papa's got a brand new bag (ish) in Arabic
+'bnXkMNyc794',	// Lo Moon - Loveless
+'NwgEELSShrU',	// Tedeschi Trucks Band - Anyhow
+'MZjAantupsA',	// Cameo - Word up
+'ZUYJ8_tBSSQ',	// Arooj Aftab
+'D30LAzub2gs',	// Satie - Gnossienne 3
+'n3nPiBai66M',	// The Cure - Just like Heaven
+'oq5X2G5qKQI',	// Loma - Ocotillo
+'mR8Gl5bHkg4',	// John Bennet - Weep O mine Eyes
+'o5nh_lwNxWw',	// Jurassic 5 - Jayou
+'XmjcuFY6W0g',	// Radiohead - Weird Fishes (cover)
+'KqefV-dapQc',	// Buddy Holly - Rave on
+'435SDzZYz0E',	// This is the Kit - Moonshine Freeze
+'LCr81kVTdqE',	// Kate Nash - Pumpkin Soup
+'A8aq4BPX3bg',	// Epic 70s Japanese soundtrack
+'xkoG4UfF3ew',	// Rachel K Collier - Earthquake
+'41KBZsdC2dw',	// Franz Biebl - Ave Maria
+'NSD11dnphg0',	// Stone Roses - Fool's Gold
+'4mMUJFAd4rQ',	// Billy Bragg - Milkman of Human Kindness
+'TD2hNsY6G7E',	// The True Loves
+'A_F6FS-SIM0',	// Cocteau Twins - Watchlar 
+'5drCQq73ZBE'	  // James MacMillan / Apollo 5 - O Radiant Dawn
+];
+
+const cookieName = 'adventCalendar_bob';
+
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script> 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-cookies.js"></script> 
+
+<script type="text/javascript" src="script5.js"></script>
+
+</head>
+
+<body onresize="setDoorHeight()">
+
+<p>This site uses cookies to remember which doors you've already opened.  A slightly seasonal selection.</p>
+
+	<main id="gridContainer" ng-app="adventCalendar" ng-controller="AdventCalendarController" ng-init="loadData()">
+
+		<div class="door fullSize" ng-repeat="door in doors | orderBy: 'position'">
+			<div class="shutDoor fullSize" ng-if="!door.opened" ng-click="openDoor(door.day)">
+				<p>{{door.day}}</p>
+			</div>
+			<div class="openDoor fullSize" ng-show="door.opened" ng-if="door.day <= today" >
+				<iframe class="fullSize" src="{{getVideoUrl(door.day)}}" frameborder="0" allowfullscreen>
+				</iframe>
+			</div>
+		</div>
+
+	</main>
+
+</body>
+
+</html>
+
+
+
