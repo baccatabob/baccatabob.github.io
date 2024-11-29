@@ -1,0 +1,102 @@
+<!DOCTYPE html> 
+<html> 
+
+<head>
+<title>Bob's Advent Calendar 2024 - a slightly seasonal selection</title>
+
+<style>
+
+#gridContainer {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	grid-auto-rows: max-content;
+	
+	grid-gap: 1rem 1rem;
+}
+
+.fullSize {
+	width: 100%;
+	height: 100%;
+}
+
+.shutDoor {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: green;
+}
+
+.shutDoor p {
+	font-size: x-large;
+	font-weight: bold;
+	color: white;
+}
+
+</style>
+
+<script type="text/javascript">
+
+var videoIds = [
+'XS8OZp8bCak', // Staves - Chicago
+'BZyzX4c1vIs', // Churches - Clearest Blue 
+'h7QlxvTIU6Q', // Als I lay on yoolis night
+'JDL9bXlwbM4', // Midlake - Roscoe
+'Az_gT4FQO04', // Betty Boo - Where are you baby?
+
+'NRWUoDpo2fo', // Alt-J - Left hand free
+'ZjuA_o6Jzyo', // Haim - Summer girl 
+'VW7evu7SJBA', // Pomplamoose / Beatles - Come Together 
+'Q9p_tCcIVq0', // Mikaela Davis - Cinderella
+'DU3bzPQHf9Q', // Sufjan Stevens - It's Christmas Time 
+  
+'TG4PqmShvHI', // Prince - Starfish and coffee
+'WILyWmT2A-Q', // Tribe Called Quest - I left my wallet in El Segundo 
+'1R2etg__x1Y', // MC Solaar - Nouveau Western 
+'MnmgY4rR5s8', // Crossover - Photographt
+'Xxx_MwcfbEs', // Zero 7 - Destiny 
+
+'NPH9j0qVM3A', // Alice Phoebe Lou - She
+'I1g02XncuD4', // Leon Bridges - River 
+'hT5eJwgAtvY', // Sweet dreams are made of seven nation army
+'nn5ken3RJBo', // Lauridsen - O Magnum Mysterium 
+'YEFLR2JnMd0', // Andrew Bird - Bloodless 
+  
+'Byzhrg7oW58', // Glass Beams - Mahal
+'1iPwnzz4W4I', // Williams Fairey Brass Band / The KLF - What time is love? 
+'CxEoAiVleac', // INXS vs Sound Defects - Need Peace Tonight
+'5drCQq73ZBE' // James MacMillan / Apollo 5 - O Radiant Dawn
+
+];
+
+const cookieName = 'adventCalendar_bob2024';
+
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script> 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-cookies.js"></script> 
+
+<script type="text/javascript" src="script5.js"></script>
+
+</head>
+
+<body onresize="setDoorHeight()">
+
+<p>This site uses cookies to remember which doors you've already opened.  A slightly seasonal selection.</p>
+
+	<main id="gridContainer" ng-app="adventCalendar" ng-controller="AdventCalendarController" ng-init="loadData()">
+
+		<div class="door fullSize" ng-repeat="door in doors | orderBy: 'position'">
+			<div class="shutDoor fullSize" ng-if="!door.opened" ng-click="openDoor(door.day)">
+				<p>{{door.day}}</p>
+			</div>
+			<div class="openDoor fullSize" ng-show="door.opened" ng-if="door.day <= today" >
+				<iframe class="fullSize" src="{{getVideoUrl(door.day)}}" frameborder="0" allowfullscreen>
+				</iframe>
+			</div>
+		</div>
+
+	</main>
+
+</body>
+
+</html>
